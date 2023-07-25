@@ -31,7 +31,7 @@ X = Array(solution)
 t = solution.t
 
 x̄ = mean(X, dims = 2)
-noise_magnitude = 5e-3
+noise_magnitude = 5e-2
 Xₙ = X .+ (noise_magnitude * x̄) .* randn(rng, eltype(X), size(X))
 
 plot(solution, alpha = 0.75, color = :black, label = ["True Data" nothing])
@@ -41,8 +41,10 @@ scatter!(t, transpose(Xₙ), color = :red, label = ["Noisy Data" nothing])
 rbf(x) = exp.(-(x .^ 2))
 
 # Multilayer FeedForward
-U = Lux.Chain(Lux.Dense(2, 5, rbf), Lux.Dense(5, 5, rbf), Lux.Dense(5, 5, rbf),
-              Lux.Dense(5, 2))
+U = Lux.Chain(  Lux.Dense(2, 8, rbf), 
+                Lux.Dense(8, 8, rbf), 
+                Lux.Dense(8, 8, rbf),
+                Lux.Dense(8, 2))
 # Get the initial parameters and state variables of the model
 p, st = Lux.setup(rng, U)
 
